@@ -1,0 +1,329 @@
+---
+title: "MA22004"
+subtitle: "Seminar 02"
+author: "Dr Eric Hall   •   ehall001@dundee.ac.uk"
+date: "2023-09-27"
+output: 
+ ioslides_presentation:
+   widescreen: true
+   css: ../assets/style.css
+   logo: ../assets/images/rev_logo.png
+---
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\corr}{corr}
+\newcommand{\se}{\mathsf{se}}
+\DeclareMathOperator{\sd}{sd}
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, comment = "", fig.asp = .5)
+library(tidyverse)
+library(latex2exp)
+library(knitr)
+library(kableExtra)
+library(janitor)
+library(fontawesome)
+library(latex2exp)
+
+theme_ur <- theme(legend.justification = c(1,1), legend.position = c(1,1), legend.box.margin = margin(c(4, 4, 4, 4), unit = "pt"))
+theme_lr <- theme(legend.justification = c(1,0), legend.position = c(1,0), legend.box.margin = margin(c(4, 4, 4, 4), unit = "pt"))
+theme_ul <- theme(legend.justification = c(0,1), legend.position = c(0,1), legend.box.margin = margin(c(4, 4, 4, 4), unit = "pt"))
+options(width = 90, knitr.kable.NA = '', "kableExtra.html.bsTable" = T)
+lsz <- 1.0
+tsz <- 4
+```
+
+## {.mySegue .flexbox .vcenter}
+
+:::{.checkinblock}
+Please register your attendance using SEAtS. 
+:::
+
+## Announcements
+
+### Reminders 
+
+- Discuss labs, R, and RStudio at Thu workshop. 
+- Discuss worksheet 1 at Fri workshop.
+- Botanics field trip Fri 14:00-17:00.
+- Lab 1 due (next) **Fri 2023-10-06** at **17:00**. 
+
+
+## Data Collection & Analysis Field Trip &nbsp;&nbsp;`r fa("ruler")`
+
+Friday 2023-09-29 at University of Dundee Botanic Garden &nbsp;&nbsp;`r fa("cloud-rain")`&nbsp; or &nbsp;`r fa("sun")`
+
+- Activity will start at 14:30 and end at 16:30!
+- Must bring **Student ID card**.
+- Please make contact with your group in advance.
+
+![](images/botanics.png){width=80% alt="Petal width, petal length, aperture of cyclamen."}
+
+## Outline of today
+
+- What are statistics?
+- What are sampling distributions?
+- What are point estimates?
+
+:::{.tipblock}
+**Experiential learning opportunity:** Candy sampling
+:::
+
+
+## `r fa("lightbulb")` &nbsp;&nbsp;Candy sampling {.columns-2 .vcenter}
+
+The bag contains 100 pieces of candy.
+
+1. Divide into pairs.
+2. Estimate the total weight of candy:
+    - select a representative sample of 5 pieces, 
+    - weigh the candy, 
+    - multiply the weight by 20.
+3. Record your estimate (quietly).
+5. Return the sample to the bag, shake bag, pass to next pair.
+
+**Do not weight the whole bag!**
+
+![](images/scale.png){width=100% alt="Scale with five pieces of candy."}
+
+
+## But what are *statistics*?
+
+A **statistic** is a quantity that can be calculated from sample data.
+
+Prior to obtaining data, a statistic is an unknown quantity and is therefore a random variable (rv).
+
+We refer to the probability distribution for a statistic as a sampling distribution to emphasize how the distribution will vary across all possible sample data.
+
+<div class="notes">
+- Let's look at an example. 
+</div>
+
+## Examples of statistics
+
+Viewed as *estimators* for characteristics of the population.
+
+- sample mean, $\overline{X} = \frac{1}{m} \sum_{i=1}^m X_i$
+- sample variance, $S^2 = \frac{1}{m-1} \sum_{i=1}^m (X_i - \overline{X})^2$
+- avg of extreme lengths, $\widetilde{X} = \frac{\min_{i\geq 0}(X_i) + \max_{i\geq 0}(X_i)}{2}$
+
+:::{.warningblock}
+Any function of rvs $X_i$ is also a rv. Therefore, has a probability distribution.
+:::
+
+
+## Basics of statistical inference
+
+Today we will look at three tools for drawing conclusions about the characteristics of a population from data:
+
+-  point estimation
+-  confidence intervals
+-  hypothesis testing
+
+## {.mySegue .flexbox .vcenter}
+Point estimates
+
+## A point estimator
+
+Consider iid $X_1, X_2, \dots, X_m \sim F(\theta)$. 
+
+A **point estimator** $\widehat{\theta}_m$ of $\theta$ is obtained by selecting a suitable statistic $g$,
+\[
+  \widehat{\theta}_m = g(X_1, \dots, X_m) \,.
+\]
+
+<div class="notes">
+- Consider rvs $X_i \sim F(\theta)$ (general distribution)
+- Recall $\theta$ a fixed, unknown quantity
+- NOTE $X_i$ ARE RVS! not observations (data points)
+</div>
+
+## Closing the deal: point estimate
+
+A **point estimate** of a parameter $\theta$ is a single number that we regard as a sensible value for $\theta$. 
+
+A point estimate $\widehat{\theta}_m$ is computed from an estimator using sample data.
+
+:::{.warningblock}
+The symbol $\widehat{\theta}_m$ is typically used to denote *both* the estimator and the point estimate resulting from a given sample. 
+:::  
+
+<div class="notes">
+- Likewise, we refer to statistics: used for *both* the **estimator** and the **estimate**. 
+- Writing $\widehat{\theta} = 42$ does not indicate how the point estimate was obtained; therefore, it is essential to report both the estimator and the resulting point estimate. 
+- In addition, we should also report a measure of precision in our estimate. 
+</div>
+
+
+## How uncertain is our point estimate?
+
+The standard error is one measure of the precision of an estimate. 
+
+The **standard error** of an estimator $\widehat{\theta}$ is the standard deviation 
+\[
+  \sigma_{\widehat{\theta}} = \sqrt{\Var(\widehat{\theta})}\,.
+\]
+
+Often, the standard error depends on unknown parameters and must also be estimated. 
+
+The **estimated standard error** is denoted by $\widehat{\sigma}_{\widehat{\theta}}$ or simply $s_{\widehat{\theta}}$.
+
+<div class="notes">
+- Standard error is sometimes denoted $\mathsf{se} = \mathsf{se}(\widehat{\theta})$ and the estimated standard error by $\widehat{\mathsf{se}}$.
+</div>
+
+
+## {.mySegue .flexbox .vcenter}
+Interval estimates
+
+## A confidence interval
+
+An interval estimate reports an entire range of plausible values for the parameter of interest. 
+
+A confidence interval is an interval estimate that makes a probability statement about the degree of reliability, or the confidence level, of the interval.
+
+<div class="notes">
+- Alternative to reporting a point estimate for a parameter!
+</div>
+
+## $100(1-\alpha)\%$ CI definition
+
+A $100(1-\alpha)\%$ **confidence interval** for a parameter $\theta$ is a *random* interval $C_m = (L_m , U_m)$, where $L_m = \ell(X_1, \dots, X_m)$ and $U_m = u(X_1, \dots, X_m)$ are functions of the data, such that 
+\[
+  P_{\theta}(L_m < \theta < U_m ) = 1 - \alpha\,, 
+\]
+for all $\theta \in \Theta$ (the parameter space). 
+
+<div class="notes">
+- The CI represents values for the population parameter for which the difference between the parameter and the observed estimate is not statistically significant at the $\alpha$ level.
+-  If the true value of the parameter lies outside the $100(1-\alpha)\%$ confidence interval, then a sampling event has occurred (namely, obtaining a point estimate of the parameter at least this far from the true parameter value) which had a probability of $100\alpha\%$ (or less) of happening by chance. 
+- Not a probability statement about the parameter $\theta$. 
+- Note that $\theta$ is fixed ($\theta$ is not a rv) and the interval $C_m$ is random. 
+- After data has been collected and a point estimator has been calculated, the resulting CIs either contain the true parameter value or they do not. 
+</div>
+
+## What a  CI is not...
+
+> -  A $95\%$ confidence level does not mean there is a $95\%$ probability that the population parameter lies within a given interval.
+> -  A $95\%$ confidence level does not mean that $95\%$ of the sample data lie within the confidence interval.
+> - A particular confidence level of $95\%$ calculated from an experiment does not mean that there is a $95\%$ probability of a sample parameter from a repeat of the experiment falling within this interval.
+
+
+<div class="notes">
+- Nothing special about the number $95$ here. 
+- For 1st: i.e., a $95\%$ probability that the interval covers the population parameter.
+- Once an interval is calculated, this interval either covers the parameter value or it does not!
+</div>
+
+## {.mySegue .flexbox .vcenter}
+Hypothesis testing 
+
+## Two hypotheses
+
+Methods for determining which of two contradictory claims, or **hypotheses**, about a parameter is correct. 
+
+- **Null hypothesis**, denoted by $H_0$, is a claim that we initially assume to be true by default. 
+- **Alternative hypothesis**, denoted by $H_a$, is an assertion that is contradictory to $H_0$. 
+
+<div class="notes">
+- Typically, we shall consider hypothesis concerning a parameter $\theta \in \Theta$ taking values in a parameter space. 
+- The statistical hypothesis are contradictory in that $H_0$ and $H_a$ divide $\Theta$ into two disjoint sets.
+</div>
+
+## Why not *hypotheses* test?
+
+A **hypothesis test** is a statistical procedure.
+
+The test procedure is based on the initial assumption that $H_0$ is true.
+
+H-test asks if the available data provides sufficient evidence to reject the null hypothesis $H_0$. 
+
+If the observations disagree with $H_0$, then we reject the null hypothesis. On the other hand, if the sample evidence does not strongly contradict $H_0$, then we continue to believe $H_0$. 
+
+:::{.warningblock}
+The two possible conclusions of a hypothesis test are: *reject $H_0$* or *fail to reject $H_0$*.
+:::
+
+<div class="notes">
+- *Fail to reject $H_0$* is sometimes phrased *retain $H_0$* or (perhaps less accurately) *accept $H_0$*
+- Why not just *accept* the null and move on with our lives? Well, if I search the Highlands for the Scottish wildcat (critically endangered) and fail to find any, does that prove they do not exist?
+</div>
+
+## Know when to fold 'em
+
+A **test statistic** $T$ is a function of the sample data (like an estimator). The decision to reject or fail to reject $H_0$ will involve computing the test statistic.
+
+
+The **rejection region** $R$ is the collection of values of the test statistic for which $H_0$ is to be rejected in favor of the alternative, e.g.,
+\[
+R = \left\{ x : T(x) > c \right\}\,,
+\]
+where $c$ is referred to as a **critical value**. 
+If $X \in R$ then we reject $H_0$. The alternative is that $X \not\in R$ and in this case we fail to reject the null. 
+
+<div class="notes">
+- A procedure for carrying out a hypothesis test is based on specifying two additional items: 
+  -  test statistic 
+  -  corresponding rejection region.
+- If a given sample falls in the rejection region, then we reject $H_0$.
+- If $X \in R$ then the calculated test statistic exceeds some critical value.
+</div>
+
+## Balancing act
+
+The basis for choosing a rejection region involves balancing Type I and II errors. A conclusion is reached in a hypothesis test by selecting a **significance level** $\alpha$ for the test linked to the maximal type I error rate.
+
+<div class="notes">
+-  **Type I** error occurs if $H_0$ is rejected when $H_0$ is actually true. 
+-  **Type II** error is made if we fail to reject $H_0$ when $H_0$ is actually false.
+-  Fix $\alpha$ first!
+</div>
+
+## \(P\)-values (alternative to rejection region) 
+
+A **$P$-value** is the probability, calculated assuming $H_0$ is true, of obtaining a value of the test statistic at least as contradictory to $H_0$ as the value calculated from the sample data.
+
+Smaller $P$-values indicate stronger evidence against $H_0$ in favor of $H_a$. 
+
+- If $P \leq \alpha$ then we reject $H_0$ at significance level $\alpha$. 
+- If $P \geq \alpha$ we fail to reject $H_0$ at significance level $\alpha$. 
+
+## Anatomy of a hypothesis test
+
+:::{.noteblock}
+To summarize, the elements of a statistical test are:  
+
+- Null hypothesis \(H_0\)
+- Alternative hypothesis \(H_a\)
+- Test statistic 
+- Significance level \(\alpha\) / critical value \(c_\alpha\)
+- \(P\)-value / Rejection region \(R\)
+:::  
+
+## Null distribution {.columns-2 .vcenter}
+
+![](images/htests.png){width=100% alt="Pictoral representation of null distribution, with level and rejection region."}
+
+E.g., consider hypothesis tests for a population mean. 
+
+- Distribution for \(\bar{X}\)
+- Under the assumption that \(H_0\) is true, so curve is centered at \(\mu_0\)
+- Level \(\alpha\) is a probability (area)
+- Critical value \(c\) is a point
+- Test statistic?
+
+## Summary {.flexbox .vcenter}
+
+Today we discussed: point estimation, confidence intervals, and hypothesis tests.
+
+We engaged in an activity about the importance of representative sampling, sampling distributions, sampling bias, and sampling variation. 
+
+
+
+
+
+
+
+
+

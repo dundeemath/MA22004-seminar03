@@ -1,0 +1,198 @@
+---
+title: "Seminar 02"
+subtitle: "MA22004"
+date: "2024-09-25"
+author: "Dr Eric Hall   •   ehall001@dundee.ac.uk"
+format: 
+  revealjs:
+    chalkboard: true
+    html-math-method: katex
+    theme: [default, resources/custom.scss]
+    css: resources/fonts.css
+    logo: resources/logo.png
+    footer: ""
+    template-partials:
+      - resources/title-slide.html
+    transition: slide
+    background-transition: fade
+from: markdown+emoji
+lang: en
+---
+
+```{r}
+#| include: false
+knitr::opts_chunk$set(echo = FALSE, comment = "", fig.asp = .5)
+library(tidyverse)
+library(latex2exp)
+library(knitr)
+library(kableExtra)
+library(janitor)
+library(fontawesome)
+library(latex2exp)
+```
+
+# Announcements {.mySegue .center}
+:::{.hidden}
+\DeclareMathOperator{\Var}{Var}
+\DeclareMathOperator{\E}{\mathbf{E}}
+\DeclareMathOperator{\Cov}{Cov}
+\DeclareMathOperator{\corr}{corr}
+\newcommand{\se}{\mathsf{se}}
+\DeclareMathOperator{\sd}{sd}
+:::
+
+## Attendance
+
+::: {layout="[[-1], [1], [-1]]"}
+![](images/seats.png){fig-align="center" fig-alt="Register your attendance using SEAtS"}
+:::
+
+## Reminders 
+
+- Thu workshop cancelled.
+- Lab 1 due next **Fri 2024-10-04** at **17:00**. 
+
+
+## Overview of next few weeks...
+
+In this module we will look at three tools for drawing conclusions about the characteristics of a population from data:
+
+-  point estimation
+-  confidence intervals
+-  hypothesis testing
+
+Over next two seminars we will consider these concepts in general (to familiarize with language, notation, etc). Then we will focus on inferences in specific contexts. 
+
+## Goals for today
+
+Let's answer the questions:
+
+- What are statistics?
+- What are sampling distributions?
+- What are point estimates?
+
+:::{.callout-tip}
+## Experiential learning opportunity 
+
+Candy sampling
+:::
+
+# What are statistics and sampling distributions? {.mySegue .center}
+
+## Candy Sampling {.smaller}
+
+:::: {.columns}
+::: {.column width="50%"}
+The bag contains 100 pieces of candy.
+
+1. Divide into pairs.
+2. Estimate the total weight of candy:
+    - select a representative sample of 5 pieces, 
+    - weigh the candy, 
+    - multiply the weight by 20.
+3. Record your estimate (quietly).
+5. Return the sample to the bag, shake bag, pass to next pair.
+
+**Do not weight the whole bag!**
+:::
+
+::: {.column width="50%"}
+![](images/scale.png){width=100% fig-alt="Scale with five pieces of candy."}
+:::
+::::
+
+## Statistics
+
+A **statistic** is a quantity that can be calculated from sample data.
+
+Prior to obtaining data, a statistic is an unknown quantity and is therefore a random variable (rv).
+
+:::{.notes}
+- Let's look at some examples. 
+:::
+
+## Examples of statistics
+
+Viewed as *estimators* for characteristics of the population.
+
+- sample mean, $\overline{X} = \frac{1}{m} \sum_{i=1}^m X_i$
+- sample variance, $S^2 = \frac{1}{m-1} \sum_{i=1}^m (X_i - \overline{X})^2$
+- avg of extreme lengths, $\widetilde{X} = \frac{\min_{i\geq 0}(X_i) + \max_{i\geq 0}(X_i)}{2}$
+
+:::{.callout-warning}
+## Random variables have distributions
+
+Any function of rvs $X_i$ is also a rv and, therefore, has a probability distribution.
+:::
+
+## Sampling distributions
+
+We refer to the probability distribution for a statistic as a sampling distribution to emphasize how the distribution will vary across all possible sample data.
+
+# What are point estimates? {.mySegue .center}
+
+
+## A point estimator
+
+Consider iid $X_1, X_2, \dots, X_m \sim F(\theta)$. 
+
+A **point estimator** $\widehat{\theta}_m$ of $\theta$ is obtained by selecting a suitable statistic $g$,
+$$
+  \widehat{\theta}_m = g(X_1, \dots, X_m) \,.
+$$
+
+:::{.notes}
+- Consider rvs $X_i \sim F(\theta)$ (general distribution)
+- Recall $\theta$ a fixed, unknown quantity
+- NOTE $X_i$ ARE RVS! not observations (data points)
+:::
+
+## Closing the deal: point estimate
+
+A **point estimate** of a parameter $\theta$ is a single number that we regard as a sensible value for $\theta$. 
+
+A point estimate $\widehat{\theta}_m$ is computed from an estimator using sample data.
+
+:::{.callout-warning}
+## Overloaded notation
+
+The symbol $\widehat{\theta}_m$ is typically used to denote *both* the estimator and the point estimate resulting from a given sample. 
+:::  
+
+:::{.notes}
+- Likewise, we refer to statistics: used for *both* the **estimator** and the **estimate**. 
+- Writing $\widehat{\theta} = 42$ does not indicate how the point estimate was obtained; therefore, it is essential to report both the estimator and the resulting point estimate. 
+- In addition, we should also report a measure of precision in our estimate. 
+:::
+
+
+## How uncertain is our point estimate?
+
+The standard error is one measure of the precision of an estimate. 
+
+The **standard error** of an estimator $\widehat{\theta}$ is the standard deviation:
+$$
+  \sigma_{\widehat{\theta}} = \sqrt{\Var(\widehat{\theta})}\,.
+$$
+
+The **estimated standard error** is denoted by $\widehat{\sigma}_{\widehat{\theta}}$ or simply $s_{\widehat{\theta}}$.
+
+:::{.notes}
+- Often, the standard error depends on unknown parameters and must also be estimated. 
+- Standard error is sometimes denoted $\mathsf{se} = \mathsf{se}(\widehat{\theta})$ and the estimated standard error by $\widehat{\mathsf{se}}$.
+:::
+
+## Summary
+
+Today we discussed: point estimation.
+
+We engaged in an activity about the importance of representative sampling, sampling distributions, sampling bias, and sampling variation. 
+
+
+:::{.callout-tip}
+## Today's materials 
+
+Slides posted to <https://dundeemath.github.io/MA22004-seminar02>.
+
+Activity data and analysis posted to MyDundee.
+:::
