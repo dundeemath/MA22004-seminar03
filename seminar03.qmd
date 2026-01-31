@@ -1,8 +1,8 @@
 ---
 title: "Seminar 03"
 subtitle: "MA22004"
-date: "2024-10-02"
-author: "Dr Eric Hall   •   ehall001@dundee.ac.uk"
+date: "2026-02-02"
+author: "Dr John McDermott   •   jzmcdermott@dundee.ac.uk"
 format: 
   revealjs:
     chalkboard: true
@@ -49,9 +49,10 @@ library(latex2exp)
 
 ## Reminders 
 
+- Discuss worksheet 2 at Wed workshop.
 - Discuss labs, R, and RStudio at Thu workshop. 
-- Discuss worksheet 2 at Fri workshop.
-- Lab 1 due **Fri 2024-10-04** at **17:00**. 
+- ...OR... should we switch these?
+- Lab 1 due **Fri 2026-02-06** at **17:00**. 
 
 
 ## Outline of today &nbsp;&nbsp;`r fa("compass")`
